@@ -1,0 +1,90 @@
+﻿descript
+{
+	version,1
+}
+
+surface0
+{
+	//collision0,0,0,130,65,head
+	
+	element0,overlay,monitor.png,0,0
+	element1,overlay,mic.png,0,0
+	
+	animation0.interval,bind
+	animation0.pattern0,overlay,1,0,0,0
+	animation0.option,background
+
+	animation1.interval,bind+always
+	animation1.pattern0,overlay,6,0,0,0
+	animation1.pattern1,overlay,7,1200,0,0
+	animation1.pattern2,overlay,8,1200,0,0
+	animation1.pattern3,overlay,9,1200,0,0
+	animation1.pattern3,overlay,6,1200,0,0
+
+	animation2.interval,bind
+	animation2.pattern0,overlay,6,0,0,0
+
+	animation3.interval,talk,6
+	animation3.pattern0,overlay,2,300,0,0
+	animation3.pattern1,overlay,2,180,0,0
+	animation3.pattern2,overlay,3,300,0,0
+	animation3.pattern3,overlay,2,300,0,0
+	animation3.pattern4,overlay,3,300,0,0
+	animation3.pattern5,overlay,2,300,0,0
+	animation3.pattern6,overlay,3,300,0,0
+	animation3.pattern7,overlay,-1,300,0,0
+}
+
+surface1
+{
+	element0,overlay,monitor_outline.png,-3,0
+	element1,overlay,mic_outline.png,-3,0
+}
+
+surface2
+{
+	element0,overlay,mic_talk_1.png,0,0
+	animation0.interval,bind
+	animation0.pattern0,overlay,4,0,0,0
+}
+
+surface3
+{
+	element0,overlay,mic_talk_2.png,0,0
+
+	animation0.interval,bind
+	animation0.pattern0,overlay,5,0,0,0
+}
+
+surface4
+{
+	element0,overlay,mic_talk_1_outline.png,0,0
+	element1,overlay,mic_talk_1.png,0,0
+	//there's probably a way to not have to do this but i don't know it
+}
+
+surface5
+{
+	element0,overlay,mic_talk_2_outline.png,0,0
+	element1,overlay,mic_talk_2.png,0,0
+}
+
+surface6
+{
+	element0,overlay,sweep_1.png,0,0
+}
+
+surface7
+{
+	element0,overlay,sweep_2.png,0,0
+}
+
+surface8
+{
+	element0,overlay,sweep_3.png,0,0
+}
+
+surface9
+{
+	element0,overlay,sweep_4.png,0,0
+}

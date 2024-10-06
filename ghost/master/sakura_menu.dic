@@ -1,0 +1,210 @@
+SakuraMenuGreetings : nonoverlap
+{
+	"Hello."
+	"How can I help you?"
+}
+
+OnCloseMenu {
+	"\1\![bind,energy,,0]" //lol
+}
+OnChoiceTimeout {
+	"\1\![bind,energy,,0]"
+}
+
+//Because there is an all modifier here, you don't need to write -- between menu options
+OnSakuraMenu : all
+{
+	"\1\![bind,energy,-,0]"
+	"\C\![lock,balloonrepaint]\c"
+	"\0\s[0]\b2\![set,autoscroll,disable]"
+	//if SHIORI3FW.Eventid == "OnMouseDoubleClick"; SakuraMenuGreetings //The check here is so they won't comment if you click the back button. Remove if you prefer
+	
+	"\n\n\_q"
+	
+	"\![*]\q[Listen,OnAiTalk]"
+	if LastTalk != ""; "  \![*]\q[Listen again,OnLastTalk]"
+	"\n\n"
+	
+	"%*\__q[OnAddPhrase]Start transmitting\__q\n"
+	if userDialogues != IARRAY; "%*\__q[OnViewPhrases]What have you already said?\__q\n"
+	
+	"\nTalkrate: "
+	_talkrate = ("Off,0","30s,30","1m,60","3m,180","5m,300","10m,600","15m,900")
+	foreach _talkrate; _rate {
+		switch aitalkinterval == TOINT(_rate[1]) {
+			"\__q[OnTalkRateChange,%(_rate[1])]%(_rate[0])\__q "
+			"\f[underline,1]\_a[OnTalkRateChange,%(_rate[1])]%(_rate[0])\_a\f[underline,0] "
+		}
+	}
+	
+	if aitalkinterval == 0; "\n\n\![*]\q[Sit in silence,blank]"
+	else; "\n\n\![*]\q[Keep listening,blank]"	
+	"\_q\![unlock,balloonrepaint]"
+}
+
+OnAddPhrase : all {
+	"\1\![bind,energy,,1]"
+	"\C\![lock,balloonrepaint]\c"
+	_words = IARRAY //to display at the bottom
+	"\0\s[0]\*\![set,autoscroll,disable]\_q\f[color,disable]Now transmitting...\f[color,default]\n\n[half]"
+	if !reference0 {
+		"\![open,inputbox,OnAddPhrase,-1]"
+	}
+	else {
+		userDialogues ,= "%(reference0)"
+		_words = reference0
+		_words = SPLIT(_words," ")
+		_num = 0
+		foreach _words; _word {
+			_problems = ("'m","'re","'s","'ll","'nt","'ve","'d") //trying to let contractions be searched
+			_inWord = 0
+			foreach _problems; _problem {
+				if _problem _in_ _word {
+					_inWord = 1
+					_word = UNTAGP(_word)
+					_words[_num] = _word
+					break
+				}
+				else; continue
+			}
+			if _inWord == 0; _words[_num] = UNTAG(_word)
+			_num++
+		}
+		
+		_words = ARRAYDEDUP(_words)
+		_num = 0
+		foreach _words; _word {
+			_word = TOLOWER(_word)
+			_words[_num] = _word
+			_num++
+		}
+		
+		userUniqueWords ,= _words
+		userUniqueWords = ARRAYDEDUP(userUniqueWords) //because why overcomplicate it when you can do the same thing twice?
+		"\i[3]"
+		"\f[italic,1]\f[color,default.anchor]%(reference0)\f[default]"
+	}
+	"\n\n"
+	"%*\__q[OnAddPhrase]Try again\__q\n"
+	"%*\__q[OnSakuraMenu]Think some more\__q %*\__q[OnCloseMenu]Stop transmitting\__q\n\n"
+	if reference0 != "" {
+		"\f[italic,1]\f[color,disable]Words added: "
+		foreach _words; _word {
+			"%(_word) "
+		}
+		"\f[default]"
+	}
+	"\_q\![unlock,balloonrepaint]"
+}
+
+OnViewPhrases : all {
+	"\C\![lock,balloonrepaint]\c"
+	"\0\s[0]\b[2]\![set,autoscroll,disable]\*\_q"
+	"\f[color,disable]What have you already said?\f[default]\n\n"
+	
+	foreach userDialogues; _phrase {
+		"------------\n%(_phrase)\n\n[half]"
+	}
+	"------------\n\n[half]"
+	"%*\__q[OnDeletePhrases]Forget.\__q %*\__q[OnDeletePhrases,all]Forget everything.\__q\n\n[half]"
+	"%*\__q[OnSakuraMenu]Think some more\__q %*\__q[blank]Stop Remembering\__q"
+	"\_q\![unlock,balloonrepaint]"
+}
+
+OnDeletePhrases : all {
+	"\C\![lock,balloonrepaint]\c"
+	"\0\s[0]\b[2]\![set,autoscroll,disable]\*\_q"
+	if !reference {
+		"\f[color,disable]Forget.\f[default]\n\n"
+		
+		foreach userDialogues; _phrase {
+			"------------\n\__q[OnDeletePhrases,%(_phrase)]%(_phrase)\__q\n\n[half]"
+		}
+	}
+	elseif reference0 == "all" {
+		"(Caution: this will remove all known phrases and words. Are you sure?)"
+		"\n\n"
+		"%*\__q[OnDeletePhrases,confirmdeleteall]Yes.\__q    %*\__q[OnDeletePhrases]I'm not ready.\__q\n\n[half]"
+	}
+	elseif reference0 == "confirmdeleteall" {
+		userDialogues = IARRAY
+		userUniqueWords = IARRAY
+		"\f[color,disable]All has been forgotten.\f[color,default]\n\n[half]"
+	}
+	else {
+		_toDelete = reference0
+		foreach reference; _part {
+			if _part == reference0; continue
+			else; _toDelete += ",%(_part)"
+			//escaped commas cause havoc but i will just pretend i don't see it
+		}
+		_num = ASEARCH(_toDelete,userDialogues)
+		_delim = GETDELIM(userDialogues)
+		if _num != -1 {
+			userDialogues[_num] = IARRAY
+			ResetWords; --
+			"\f[color,disable]It has been pushed out of your mind.\f[color,default]\n\n[half]"
+		}
+		else; "\f[color,disable](Could not delete dialogue. %(_num) - %(_delim))\n%(reference0)\f[color,default]\n\n[half]"
+		
+		if userDialogues == IARRAY {
+			userUniqueWords = IARRAY //not sure how to handle individual word deletion so i won't worry about it
+			"\n[half]\f[color,disable]Nothing remains.\f[color,default]\n\n[half]"
+		}
+		else {
+			foreach userDialogues; _phrase {
+				"------------\n\__q[OnDeletePhrases,%(_phrase)]%(_phrase)\__q\n\n[half]"
+			}
+		}
+	}
+	"------------\n\n[half]"
+	"%*\__q[OnDeletePhrases]Forget.\__q %*\__q[OnDeletePhrases,all]Forget everything.\__q\n\n[half]"
+	"%*\__q[OnViewPhrases]Resume remembering\__q %*\__q[OnSakuraMenu]Think some more\__q"
+	"\_q\![unlock,balloonrepaint]"
+}
+
+OnLastTalk
+{
+	LastTalk
+}
+
+OnTalkRateChange
+{
+	aitalkinterval = TOINT(reference0); OnSakuraMenu
+}
+
+ResetWords {
+	//we'll just have to hope
+	userUniqueWords = IARRAY
+	_words = IARRAY
+	foreach userDialogues; _phrase {
+		_words = _phrase
+		_words = SPLIT(_words," ")
+		_num = 0
+		foreach _words; _word {
+			_inWord = 0
+			_problems = ("'m","'re","'s","'ll","'nt","'ve","'d") //trying to let contractions be searched
+			foreach _problems; _problem {
+				if _problem _in_ _word {
+					_inWord = 1
+					_word = UNTAGP(_word)
+					_words[_num] = _word
+					break
+				}
+				else; continue
+			}
+			if _inWord == 0; _words[_num] = UNTAG(_word)
+			_num++
+		}
+		
+		_words = ARRAYDEDUP(_words)
+		_num = 0
+		foreach _words; _word {
+			_word = TOLOWER(_word)
+			_words[_num] = _word
+			_num++
+		}
+		userUniqueWords ,= _words
+	}
+	userUniqueWords = ARRAYDEDUP(userUniqueWords)
+}

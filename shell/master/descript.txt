@@ -1,0 +1,27 @@
+charset,UTF-8
+type,shell
+
+name,Default Shell
+craftman,SmokyCinnamonRoll
+craftmanw,SmokyCinnamonRoll
+craftmanurl,https://smokycinnamon.github.io/indifferentsorrel/index.html
+
+seriko.alignmenttodesktop,free
+seriko.use_self_alpha,1
+
+sakura.menu,auto
+kero.menuitem0,0
+
+sakura.bindgroup0.name,outline,-
+sakura.bindgroup0.default,0
+
+sakura.bindgroup1.name,scanner,on
+sakura.bindgroup1.default,0
+sakura.bindgroup2.name,scanner,static
+sakura.bindgroup2.default,1
+
+kero.bindgroup0.name,outline,-
+kero.bindgroup0.default,0
+
+kero.bindgroup1.name,energy,-
+kero.bindgroup1.default,0

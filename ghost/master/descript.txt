@@ -1,0 +1,21 @@
+charset,UTF-8
+
+name,Survivors Guilt
+type,ghost
+
+shiori,yaya.dll
+
+balloon,Distant Lights - Star Blue
+balloon,Distant Lights 03 - Blue
+balloon,Galaxy (Swan Nebula)
+
+craftman,SmokyCinnamonRoll
+craftmanw,SmokyCinnamonRoll
+craftmanurl,https://smokycinnamon.github.io/indifferentsorrel/index.html
+
+sakura.name,Monitor
+kero.name,Radio
+
+icon,icon.ico
+
+sstp.allowunspecifiedsend,0

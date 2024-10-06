@@ -1,0 +1,45 @@
+OnFirstBoot
+{
+	//If you add variables, make sure to initialize them here!
+	//Note - I haven't added anything about username or pronouns here because it's all handled by the SSP prefs
+	stroke = 0
+	LastTalk = ""
+	//savedPoems = IARRAY
+	//otherGhostDialogues = IARRAY
+	
+	userDialogues = IARRAY
+	userUniqueWords = IARRAY
+	
+	"\1\s[10]\0\s[0]\b[2]\f[italic,1]The ship \f[italic,default]Zvyšnovaja\f[italic,1] has recently gone silent.\w9\w1 The first transmissions from the disaster made clear that the captain, rest their soul, is no longer living.\x[noclear]\nOur current theory is that the generator, for unknown reasons, had a meltdown; taking both the ship and crew with it.\x[noclear]\nThere will be no attempts to recover either, but the Public wouldn't take kindly to hearing that we didn't even try.\n\n(Even for a simple cargo ship.)\x[noclear]\n\n[half]You have been put in charge of listening for incoming transmissions, and, if necessary, transmitting to any survivors.\x[noclear]\n\n\f[italic,default]\_q------------\_q\n(The radio is on... What if someone really is still out there?)\x\e"
+	
+	//Zvyšnovaja - supernova. I wanted it to be dying supernova but thats a) too on the nose and b) looks bad in lacinka
+}
+
+OnInitialize
+{
+	//If you want some variables to reset on boot, put them here. This event will happen even if you add other events like OnGhostChanged
+	//OnInitialize is a NOTIFY event! That means it cannot return scripts. This event is only meant for things like variable changes. See this page on Ukadoc for more info: https://ukagakadreamteam.github.io/ukadoc/manual/spec_shiori3.html
+	
+	//If you add new variables in updates, I recommend initializing them like so:
+	//if !ISVAR("NewVariable"); NewVariable = 0
+	//This means that it will only set the new variable if the user doesn't already have it, so that their variables don't get overwritten
+	
+	if reference0 != "reload" //For things you want to reset EXCEPT when just reloading; a convenience for you the dev, basically
+	{
+		LastTalk = ""
+	}
+}
+
+//use \![blackout,on] and \![blackout,off] to toggle things. remember the closing tag..!
+
+OnBoot
+{
+	"\1\s[10]\0\s[0](Maybe you can try again.)"
+}
+
+OnClose
+{
+	"\1\s[10]\0\s[0](What else is there to do? This has already been enough.)"
+	--
+	"\x\-" //This is what makes the ghost close (after a short pause), do not remove the \- , and MAKE SURE you don't use a \e before this point or it won't work
+}

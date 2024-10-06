@@ -1,0 +1,221 @@
+OnAiTalk
+{
+	if CHAIN.IDName == ""
+	{
+		LastTalk = Static(RandomTalk)
+	}
+	else
+	{
+		LastTalk = Static(ChainTalk)
+	}
+	LastTalk
+}
+
+Static {
+	LOGGING("staticing")
+	LOGGING(_argv)
+	if "\![nostatic]" _in_ _argv[0] {
+		_argv
+	}
+	else {
+		_reference = _argv
+		_staticRef = _argv
+		_reference = UNTAG(_reference)
+		
+		_staticArray = SPLIT(_staticRef,' ')
+		_static = "\1\![bind,energy,,1]\0"
+		foreach _staticArray; _word {
+			_tagWord = _word
+			_word = UNTAG(_word)
+			_lowWord = TOLOWER(_word)
+			_num = ASEARCH(_lowWord,userUniqueWords)
+			if _num == -1 {
+				_length = STRLEN(_word)
+				_lenNum = 0
+				_staticWord = ''
+				while _lenNum != _length {
+					_ascii = ("0x2591","0x2592","0x2593")
+					_asciiStatic = ANY(_ascii)
+					_staticWord += "\_m[%(_asciiStatic)]"
+					_lenNum++
+				}
+				_static += "%(_staticWord) "
+			}
+			else {
+				_static += "%(_tagWord) "
+			}
+		}
+		_static += "\1\![bind,energy,,0]\0"
+		_static
+	}
+}
+
+UNTAG {
+	//boy i sure hope this works
+	_replace = ("\0","\1","\x[noclear]","\x","\n[half]","\n","\w1","\w2","\w3","\w4","\w5","\w6","\w7","\w8","\w9","\s[0]",".",",","-","!","?",":",";","\e","\![nostatic]","'\f[size,-2]","\f[size,+2]","\b[0]","\b[2]")
+	//note that i can't replace single quotes without causing other issues. for the moment, anyways
+	foreach _replace; _element {
+		_argv = REPLACE(_argv,"%(_element)","")
+	}
+	_argv
+}
+
+UNTAGP {
+	//for keeping quotes. untag problems?
+	_replace = ("\0","\1","\x[noclear]","\x","\n[half]","\n","\w1","\w2","\w3","\w4","\w5","\w6","\w7","\w8","\w9","\s[0]",".",",","-","!","?",":",";","\e","\![nostatic]","'\f[size,-2]","\f[size,+2]","\b[0]","\b[2]")
+	foreach _replace; _element {
+		_argv = REPLACE(_argv,"%(_element)","")
+	}
+	_argv
+}
+
+//lost in space! like my concept album that never came to be (wasn't satisfied with lack of space/radiation knowledge, simply too lazy to research)
+RandomTalk : nonoverlap_pool
+{
+	if userDialogues != IARRAY {
+		"\![nostatic]\f[color,default.anchorvisited]\f[italic,1]%ANY(userDialogues)\f[color,default]\f[italic,default]\e"
+		"\![nostatic]\f[color,default.anchorvisited]\f[italic,1]%ANY(userDialogues)\f[color,default]\f[italic,default]\e"
+		"\![nostatic]\f[color,default.anchorvisited]\f[italic,1]%ANY(userDialogues)\f[color,default]\f[italic,default]\e"
+	}
+	"\0\s[0]I can hear a heartbeat in my ears. My blood runs through, a pulsing, metallic sound - like waves on the shore.\w6\n \nBut I don't feel it.\w4 My eyes are shut to anything in the world.\w3 My hopes, my dreams, none of them can come true.\w6\n \nAre you out there? Am I your dream?\e"
+	
+	"\0\s[0]Inevitability is the heart of the universe. Or, rather, entropy is. Maybe that's the law I'm thinking of.\w6\n \nI don't think any of us considered this, though."
+	
+	"\0\s[0]Finding someone else's soul is hard, isn't it?\w6 \nI've looked and looked, but nothing seems to come of it. Just when you think you've found a new corner, it all goes away again.\w6 How I wish we could change.\e"
+	
+	"\0\s[0]Are you lonely? Most everyone is sometimes.\w3 I used to find us in a dream. I used to dream about us. \w6\nWell, so much for that, now. I sleep, awake, and die again.\e"
+	
+	"\0\s[0]It's my heart at the center of the universe. It all revolves around me. Is that right? Certainly it's not fair. What is a god supposed to be?\e"
+	
+	"\0\s[0]By the time any of us realized what was happening, it was already too late. That's what they must have told you.\w6\n \nI never did figure out how to work this thing. The everything. It's like my self dispersed. Is it like that for you, too?\e" //talking about internet communication. maybe it's harder in space. (like in artemis? haha.)
+	
+	"\0\s[0]Did you want me to write you a letter?\w6 \nNo, I expect not. Snail mail a proponent of you are not. Probably you've all given up on us. That's okay. I would've given up on us too.\e"
+	
+	"\0\s[0]It's really rather cold, here. My skin feels dry against my bones. Sometimes it's tempting to... ah, well. Nothing's ever as nice as in the movies.\e" //i shan't say it
+	//also, extreme radiation is actually HEAT, so... not relevant to our character if we go by this. read up about the guy that accidentally looked in a barrel(?) and then turned to goop. shit's scary
+	
+	"\0\s[0]I can't hear you. I... are you there? Please, tell me, are you there? Can you hear me? Hello?\e"
+	
+	"\0\s[0]The captain went first, poor soul. I got their hat.\w6\n \nThat could give me brain tumors, you know. It could melt my entire being and then you wouldn't hear from me anymore.\x[noclear]\n.\w6.\w9.\w9 \w9Let's not think about that actually. How are you doing?\e"
+	
+	"\0\s[0]I've been trying to find them, you know. None of us could have survived. But......\w6 well, here I am. So maybe...?\e"
+	
+	"\0\s[0]I don't really remember anything else, past the captain. Sometimes I try. But it's all quiet. There's whispers of what might have been, but they don't talk once they know I'm listening.\w6\n \nThat's not very satisfying, huh? Of course you'd think that. Maybe you should be grateful I'm talking to you, for once.\w6\n............ \nI'm sorry. I don't know what came over me. Please don't...\w9 well, what can you do, now? It's not like they can come and get us. It's not like they tried. \w6\nIt's not like it would have even mattered...\e"
+	
+	"\0\s[0]I wonder if you sent someone else out to take our place. Or if you tried to recover the ship?\w3 I never learned the protocol.\w3 'Cause what could ever get \f[italic,1]us\f[italic,default], right? \w6\nEveryone has to learn someday.\e"
+	
+	"\0\s[0]I don't find myself very partial to sleep nowadays. There's no phases, I'm not even in \f[italic,1]orbit\f[italic,default], I just...\w9\n \n\f[size,-2]I wish you'd come back for me...\w3 I wish somebody...\f[size,+2]\e"
+	
+	"\0\s[0]Where do you suppose I am, by the way? Do you think I've transcended galaxies? \n\w6I mean, why else would you not come and get me?\w6\n \nJust because I know where \f[italic,1]you\f[default] are doesn't mean I know how to get there...\e"
+	
+	"\0\s[0]I just realized, I don't even know if it's \f[italic,1]you\f[default] I'm talking to. \w6\nI guess I'm not talking to anyone but myself, really.\w3 Would that make you sad?\w6 \n...Would anything?\e"
+	
+	"\0\s[0]Someday I might run into a star and burn up. I think that's how these things work.\e"
+	
+	"\0\s[0]When it started, you know, I don't think any of us realized how bad it was. Not really. What's a little more radiation when you're surrounded by it?\w9\n \n............\nWhen the captain started screaming, when they stripped, I think that's when the gravity of it began to set in. \nThe air started to taste like blood. But what was there to do? It's not like we could leave. Nobody expects a generator to start leaking, and we left our only engineer on mars ages ago. On vacation, if I remember right.\e" //yes haha stripping funny BUT it is meant to clue you in to the fact that they are experiencing extreme heat and also pain. just  a note while i try to find the ships name i put in here somewhere
+	
+	"\0\s[0]Do you remember the night after my knowledge and safety test?\w9 \nYou laughed with me over all that fuss with proper respect for generators, about how strict they are with needing an engineer on board.\w6\n \nIt's not so funny from the other end, except I remember that night unchanged.\e"
+	
+	"\0\s[0]Is my situation hopeless? Are you pulling all nighters just to get me back?\w6 \n...No, I suppose you're not that kind of a person to me. I'm not that kind of person to \f[italic,1]you\f[default], rather.\e" //wordplay...
+	//the user/the person they're talking to likely wasn't very nice to them.
+	
+	"\0\s[0]I'm so tired now, but I can't sleep. Or I'm always asleep and these are just my dreams. It sure feels like a dream.\w6\n \nI wish I could wake up in my bed again, see the captain, talk to you. I wish a lot of things lately, mostly when I'm bored.\w6 \nI'm always bored, haha...\e"
+	
+	"\0\s[0]You know, the captain took me aside a few days before... all this? \w9\nThey said...\w6 it was something about me and you.\w6 \nLike, in a negative sense. Isn't that so odd?\w6\n \n[half]I tried to tell them how much you love me, but they just wouldn't listen. It's like you said, nobody ever does...\e" //i'm sure this reads strange for people on all sides of such a situation but i never said i could write well
+	
+	"\0\s[0]Do you remember the story we had to learn about that Japanese man? To be honest, I think the captain would have survived it, if not for...\w6\n \nWell, I'm not sure what it was exactly. They made us read about Chernobyl, too. Maybe something melted through? Would that have been it for us, alone?\w9\nI'm sure you remember, you know. You're always so good at that.\e" //ouichi or something i think. iirc he 'survived' the bombing of hiroshima/nagasaki but because of the intense radiation his body literally decomposed before he actually died. I think he was kept alive cause they wanted to study him or something, but I didn't read about it in detail yet. so I could be wrong.
+	//so, basically, whether or not the captain survived the initial leak, it wouldn't have mattered anyways...
+	
+	"\0\s[0]It's morbid, I know, but I've been wondering how long I've got left. \w6\nNow, I'm not really sure how long I've been here, either.\w3 It feels like forever.\e"
+	
+	"\0\s[0]How far away from earth do you think I am? Or do you already know? \w6\nIs it too far to reach me?\w3 I can't seem to find you anymore. I never thought about how much I would miss that feeling...\e" //i've been reading witch king by martha wells (it's so long and it needs to be returned to the library so soon!) and it's got cool worldbuilding.. so I guess I'm drawing from that
+	
+	"\0\s[0]What I would give for a boring desk job like yours now. \w9\nI know, I know, it's not boring...\w6 well, maybe I'm making it less boring by being here. Imagine that! Me, making something exciting!\e"
+	
+	"\0\s[0]Here in the endless expanse of just... nothing, how long do you think it's been? Since the accident? The incident, I mean. How long \f[italic,1]has\f[default] it been?\w6 \nI know you have that information. It feels like it's been forever in this god-forsaken emptiness.\e"
+	
+	"\0\s[0]Is anyone out there? Are you recieving me? I was on the ship \f[italic,1]Zvyšnovaja\f[default] before it... collapsed, I guess.\w6\n \nOh god, I broke formality. Don't dismiss me because of that, okay?!\w6 \nPlease, if you're hearing this, I just... I don't know what my coordinates are. But you should be able to get a lock on \f[italic,1]something\f[default] in this goddamn suit. Just help me... god, please, just find me......\e"
+	
+	"\0\s[0]Sometimes when I close my eyes I can see these bright blue flashes.\w6 \nIt's just the space radiation, I guess.\w9 \n\n[half]As opposed to the ship radiation. Haha.\w9 \nFuck.\e"
+	
+	"\0\s[0]You know...\w6 I know you love me, and I'm not doubting that -\w3 how could I ever?\w3 -\w3 but, being in space, alone, it gives you some time to think, y'know?\w9\n \nAnd I'm thinking... \w6\nWell, maybe you don't love me enough to help find me, or bug whoever's working on it until \f[italic,1]they\f[default] can find me.\w9\x[noclear]\n \nI guess that's fair. I probably wouldn't want to find me either, right? Cause I'm just... \xFuck, I dunno. Promise to not hold anything I say while in extreme distress against me?\w9\n \nPlease?\e"
+	//^30
+	
+	"\0\s[0]Do you think radiation hangs around in space like it does on earth?\w6 \nI'm just asking 'cause... Well, just in case everything else drifted and \f[italic,1]I\f[default] didn't. Y'know?\e"
+	
+	"\0\s[0]I just had to be the one who wanted to go to space. \w6\nHere I thought I was lucky that you helped me get here. \x[noclear]Well, look at us now, huh? I'm about a million light years away probably, and you're... \w9\n\nOh, god, you're just......\w9 \nListen, don't blame yourself for this, okay? It's not like you could have known. Blame me for not stopping the captain from letting our last engineer go on vacation to fucking \f[italic,1]Mars\f[default] of all places. \w6\nNone of this was your fault, okay?\e"
+	
+	"\0\s[0]It's funny, you know.\w6 I keep thinking 'well, surely the captain will get us out of this.'\w6\n \n[half]They really cared for us. It surprised me, sometimes - I kept expecting them to be like-\w9 \n.\w3.\w3.\nIt doesn't really matter now, though, does it? They're dead. all of them.\w9\n \nAnd I'm just the freak of nature that survived.\e"
+	
+	"\0\s[0]I've been trying to remember what we were even doing. \w6\nHow we missed it for so long.\w9\n \nBut it's all just... blank.\w3 It's like when I try to look for you, for the rest of our crew.\w9 \nSometimes I think I died with them.\e"
+	
+	"\0\s[0]I guess...\w6 If I can't feel you, can't find you, you can't find me, right?\w9\n \n...... Do you miss me? It doesn't hurt, does it?\w6 \nI don't want you to hurt just because I did something stupid again.\w9\n \nIt'll be okay, won't it? I know you can get through this. And any day now, I'll find a ship and come home to you, and my heart won't feel so goddamn \f[italic,1]empty\f[default] anymore.\e"
+	
+	"\0\s[0]It's funny how quickly things can go wrong, isn't it?\w6 \nOne moment I was on a routine supply shipment, the next almost all my friends are dead and I'm just lost in fucking space.\w3 Oh, god, I could be \f[italic,1]anywhere\f[italic,default].\e"
+	
+	"\0\s[0]............\w9\nThey're not coming for us, are they?\w6 For me, I mean.\w9 \nAs far as I can tell, I'm the only one who didn't die, so... just me.\w6 And you've said it a million times - who would ever want to save \f[italic,1]me?\f[italic,default]\e"
+	
+	"\0\s[0]There's not a lot to do out here, so I've been trying to play solitaire in my head.\w6 \nI keep losing.\e"
+	
+	"\0\s[0]I really want to find out that this was all a nightmare. That they're all still alive. Or, I dunno, that there's \f[italic,1]something\f[default] out there. \w6I know, I know, it's stupid, wishful thinking.\w6 I guess you can take the person out of the religion, but not the religion out of the person... Or something like that.\w3 Sorry.\e"
+	
+	"\0\s[0]It's really scary out here.\w3 Sorry, can I say that? I'm just... scared.\nHave you ever looked at space? Like, really \f[italic,1]looked?\f[default] \nIt's pretty enough from Earth if you find the right spot, but here...\e"
+	//^ 40
+	
+	"\0\s[0]It's occured to me that I'm pretty much broadcasting on all channels.\w6 Or at least I'm trying to.\w6\n \n...I'm sorry! if you're hearing this, my ship's reactor had a meltdown and it exploded, so basically I've been going a little crazy.\w9\n \nAlso, please, for the love of god get my coordinates and come rescue me. It's a miracle I even survived this long, and I'm not sure how much time I have left!\e"
+	
+	"\0\s[0]I'm hungry.\w9\n \nSorry, that's a stupid thing to say I guess.\w3 But it is true. My last meal was... I don't even know when. I can't remember if it was before or after the leak...\e"
+	
+	"\0\s[0]I'm a little glad the ship was destroyed, I guess. \w6\nEven if we had fixed the leak, or, whatever caused it in the first place, it's not like radiation just... stops.\w6 At least I remember that much, right? Haha...\e"
+	
+	"\0\s[0]I wonder how far out we were? Like, what route we took? \w6\nIt's not like I'm paid to remember that, but, y'know, someone would've told me if I asked.\x[noclear]\n \nIt's just, um, it must not be a very common one, huh?\e"
+	
+	"\0\s[0]My head feels like it's not on right. I'm not bleeding from anywhere, or at least, I don't think so, but I still taste it in my mouth. \w9\n...That's not a good sign, is it?\e"
+	
+	"\0\s[0]Maybe I should've gotten into engineer work.\w6\n... Then again, we both know I'm no good at remembering all those complicated details. They almost made me retake the safety test, did I ever tell you?\w9\n \n......Maybe that should've been a sign.\e"
+	
+	"\0\s[0]Hello? Is anyone out there? I'm part of \f[italic,1]Zvyšnovaja's\f[default] crew. I've been stranded for... fuck, however long it's been since it was destroyed. \w6\nLook, if you're hearing this, try and find me, okay? There has to be something that lets you do that. Just come get me and take me wherever I have to go to get back to Earth.\w9\n \nPlease, I just... I just want to go home, god, I'm sick of being out here alone...\e"
+	
+	"\0\s[0]I really want to believe everything's going to be okay. It's that stupid optimism you keep chiding me about.\w9\n \nWell, you win again. Everything sucks and I can't even see you this far out. All the rest of the crew is dead and there's nothing in the universe that brings people back, so now they're just gone and I... \w6\nGod, they're......\e" //you win this time vs you win again are two different things..
+	
+	"\0\s[0]Fuck, what if everyone's actually getting my transmissions and they're ignoring me because all I'm talking to is you?\w6 \nHey, whoever you are out there, please don't ignore me, okay? Please? I'm- It's been a really super... fucking shit experience.\e"
+	
+	"\0\s[0]I think hell must be when you're alone in space. Really, truly alone.\w6 \nAnd you're just fucking waiting to either die or be rescued, whichever comes first. And I think...\w6 But that's morbid, isn't it? Surely \f[italic,1]someone\f[default] is out there?"
+	//^ 50
+	
+	"\0\s[0]Sometimes I catch myself thinking that this isn't so bad. That I could get used to the endless nothingness, punctuated by flashes of bright blue.\w6\n \nIt's bad. It's so fucking bad. I can't seem to realize that they've died, that \f[italic,1]I'm\f[default] going to die out here.\w6\n \nBecause I am going to die, aren't I?\w3 You were never going to send anyone out to rescue \f[italic,1]me\f[default]. You, in the singular, wouldn't even do that.\w9\n \nSo... I guess I wouldn't save me either, haha......\e"
+	
+	"\0\s[0]I've had this headache recently. It won't go away, but I'm learning to live with it. \w6\nI feel like I'm going to explode.\e"
+	
+	"\0\s[0]Reaching out into the space they left, you leave, I don't brush past anything. Rationality and I aren't friends, as you've so often reminded me - if the reason I can't find \f[italic,1]you\f[default] is because you're so far away, then surely...?\x[noclear]\n \nBut, no. Even after I come home to you I will \f[italic,1]still\f[default] be in this empty goddamn void.\e"
+	
+	"\0\s[0]So, what's the protocol for missing minor crew members anyways?\w6\nDo I get my own search party, or like...?\w9\n \n...Well, maybe you're not in charge of anything. You never did want to find me if I died.\w3 That's okay, though, I can't blame you for it.\e"
+	
+	"\0\s[0]I'm not tethered to anything, by the way. Not even a stray piece of hull. Everything looks so much the same, I can't determine if I'm moving.\w9\n \nAnd, no, I don't know why I'm alone in a spacesuit, devoid of any ship wreckage. Maybe the cable just... melted? \w3\nDoes that sound like it could happen?\e"
+	
+	"\0\s[0]I keep trying to think of any details for you. You love details, right? How such and such went wrong, and how we can plan to fix it, and remember all these stupid safety redundancies...\w6\n \nWell, I'm coming up short. There was a radiation leak from the engine, we know that much. And then it got bad, which is when we actually noticed it, but...\w9\n \nCan you forgive me if I want to talk about something else? Please?\e" //you in the plural for a bit
+	
+	"\0\s[0]So... space, huh? My one thing I did right in my life, and it still blew up in my face.\w3 \nLiterally, even. Haha... god, this is bad.\e"
+	
+	"\0\s[0]Maybe I'm not even transmitting. That would be pretty fucked up, wouldn't it?\w6 \nMy one chance for survival, and I blow it 'cause I'm useless with all this technology.\w3 I'd say it's a miracle I even got here, but...\e"
+	
+	"\0\s[0]Um, something I've been wondering...\w6 How do light years work, anyways? Is... \w6\nIs it too late by the time this gets back to you?\e"
+	
+	"\0\s[0]Well, if I ever get rescued, at least I can say I'm the only person who survived a nuclear meltdown and subsequent ship meltdown in space. That would sound pretty badass.\w9\n \nUm...\w3 hey, nobody else has had this happen to them, right? Surely I'm the first person to do this? It really \f[italic,1]would\f[default] be just my luck if I wasn't, huh?\e"
+	//^ 60!
+}
+//space below so i don't have to keep getting cramped at the bottom of my screen
+
+
+
+
+
+
+
+
+
+
+
+
+
+

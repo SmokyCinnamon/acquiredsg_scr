@@ -1,0 +1,173 @@
+version,1
+
+surface10
+{
+	element0,overlay,radio.png,0,0
+	animation0.interval,bind
+	animation0.pattern0,overlay,11,0,0,0
+	animation0.option,background
+	
+	animation1.interval,bind+always
+	animation1.pattern0,overlay,100,100,0,0
+	animation1.pattern1,overlay,101,90,0,0
+	animation1.pattern2,overlay,102,80,0,0
+	animation1.pattern3,overlay,103,80,0,0
+	animation1.pattern4,overlay,104,80,0,0
+	animation1.pattern5,overlay,105,80,0,0
+	animation1.pattern6,overlay,106,80,0,0
+	animation1.pattern7,overlay,107,100,0,0
+	animation1.pattern8,overlay,108,100,0,0
+	animation1.pattern9,overlay,109,100,0,0
+	animation1.pattern10,overlay,110,100,0,0
+	animation1.pattern11,overlay,111,100,0,0
+	animation1.pattern12,overlay,112,100,0,0
+	animation1.pattern13,overlay,-1,80,0,0
+	animation1.pattern14,overlay,113,900,0,0
+	animation1.pattern15,overlay,114,65,0,0
+	animation1.pattern16,overlay,115,100,0,0
+	animation1.pattern17,overlay,116,90,0,0
+	animation1.pattern18,overlay,117,90,0,0
+	animation1.pattern19,overlay,118,85,0,0
+	animation1.pattern20,overlay,119,80,0,0
+	animation1.pattern21,overlay,120,80,0,0
+	animation1.pattern22,overlay,121,80,0,0
+	animation1.pattern23,overlay,122,80,0,0
+	animation1.pattern24,overlay,123,75,0,0
+	animation1.pattern25,overlay,124,70,0,0
+	animation1.pattern26,overlay,125,65,0,0
+	animation1.pattern27,overlay,126,60,0,0
+	animation1.pattern28,overlay,127,50,0,0
+	animation1.pattern29,overlay,128,45,0,0
+	animation1.pattern30,overlay,129,45,0,0
+	animation1.pattern31,overlay,130,50,0,0
+	
+}
+surface11
+{
+	element0,overlay,radio_outline.png,0,0
+}
+
+surface100
+{
+	element0,overlay,energy_1.png,0,0
+}
+surface101
+{
+	element0,overlay,energy_2.png,0,0
+}
+surface102
+{
+	element0,overlay,energy_3.png,0,0
+}
+surface103
+{
+	element0,overlay,energy_4.png,0,0
+}
+surface104
+{
+	element0,overlay,energy_5.png,0,0
+}
+surface105
+{
+	element0,overlay,energy_6.png,0,0
+}
+surface106
+{
+	element0,overlay,energy_7.png,0,0
+}
+surface107
+{
+	element0,overlay,energy_8.png,0,0
+}
+surface108
+{
+	element0,overlay,energy_9.png,0,0
+}
+surface109
+{
+	element0,overlay,energy_10.png,0,0
+}
+surface110
+{
+	element0,overlay,energy_11.png,0,0
+}
+surface111
+{
+	element0,overlay,energy_12.png,0,0
+}
+surface112
+{
+	element0,overlay,energy_13.png,0,0
+}
+surface113
+{
+	element0,overlay,energy_14.png,0,0
+}
+surface114
+{
+	element0,overlay,energy_15.png,0,0
+}
+surface115
+{
+	element0,overlay,energy_16.png,0,0
+}
+surface116
+{
+	element0,overlay,energy_17.png,0,0
+}
+surface117
+{
+	element0,overlay,energy_18.png,0,0
+}
+surface118
+{
+	element0,overlay,energy_19.png,0,0
+}
+surface119
+{
+	element0,overlay,energy_20.png,0,0
+}
+surface120
+{
+	element0,overlay,energy_21.png,0,0
+}
+surface121
+{
+	element0,overlay,energy_22.png,0,0
+}
+surface122
+{
+	element0,overlay,energy_23.png,0,0
+}
+surface123
+{
+	element0,overlay,energy_24.png,0,0
+}
+surface124
+{
+	element0,overlay,energy_25.png,0,0
+}
+surface125
+{
+	element0,overlay,energy_26.png,0,0
+}
+surface126
+{
+	element0,overlay,energy_27.png,0,0
+}
+surface127
+{
+	element0,overlay,energy_28.png,0,0
+}
+surface128
+{
+	element0,overlay,energy_29.png,0,0
+}
+surface129
+{
+	element0,overlay,energy_30.png,0,0
+}
+surface130
+{
+	element0,overlay,energy_31.png,0,0
+}

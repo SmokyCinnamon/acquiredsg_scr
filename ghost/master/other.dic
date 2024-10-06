@@ -1,0 +1,178 @@
+OnTranslate
+{
+	_talk = reference0
+	
+	//This is what makes %(embedded_elements) work in script input
+	if reference1 == "" && reference2 == "" //If this is from the input box
+	{ //send input box : no event (ref2) , no special flag (ref1)
+		_talk = EVAL('"' + REPLACE(_talk,'"','""') + '"')
+	}
+	
+	//foreach userInputWords {
+		
+	//}
+	
+	/*if "\![blackout,on]"_in_ _talk && toConvert == '' {
+		_talk = ConvertToBlackout(_talk)
+	}
+	else {toConvert = ''}*/
+	
+	//If you want to add anything to OnTranslate, like text replacement, I would put it after this point, generally. Just make sure it's before the TOSTR(_talk)
+	
+	TOSTR(_talk)
+}
+
+/*ConvertToBlackout : all {
+	toConvert = _argv
+	_converted = '\*'
+	LOGGING(_toConvert)
+	if RE_SEARCH(toConvert,"\\\!\[blackout\,on\](.+[^\\\!\[blackout\,off\]])\\\!\[blackout\,off\]") //PLEASE
+	{
+		_capture = RE_GETSTR[1] //first capture group. incidentally, i don't think this can handle multiple on/off tags, so be careful!
+		_capture = SPLIT(RE_GETSTR[1],' ') //split by spaces...
+		
+		_num = 0
+		foreach _capture; _word {
+			_inArray = 0
+			foreach poemReplacement; _toReplace {
+				_toReplace = SPLIT(_toReplace,'|||')
+				if _num == TOINT(_toReplace[1]) {
+					_inArray = 1
+					break
+				}
+				else; continue
+			}
+			if inArray == 1 {
+				if "\f[color,disable]" _in_ _word {
+					//17 at the start, 17 at the end (what a nice coincidence!)
+					_word = ERASE(_word,-17,17)
+					_word = ERASE(_word,0,17)
+				}
+				else {
+					_word = "\f[color,disable]%(_word)\f[color,default]"
+				}
+			}
+			_converted += "\__q[OnBlackout,%(_word)|||%(_num)]%(_word)\__q "
+		}
+		_converted = ERASE(_converted,-1,1) //remove trailing space
+		_converted += "\n\n\_q%*\__q[OnSavePoem,%(_converted)]Save poem\__q %*\__q[blank]Close dialogue box\_q"
+	}
+	
+	_converted
+	toConvert = ''
+}
+
+
+OnBlackout : all {
+	//_ref = SPLIT(reference,'|||')
+	//_word = _ref[0]
+	//_num = _ref[1]
+	//_word = "\f[color,disable]%(_word)\f[color,default]|||%(_num)"
+	
+	_num = ASEARCH(reference,poemReplacement)
+	if _num != -1 {
+		poemReplacement[_num = IARRAY] 
+	}
+	else {
+		poemReplacement ,= ("%(reference)")
+	}
+	--
+	ConvertToBlackout(toConvert)
+}
+
+OnSavePoem : all {
+	_poem = reference
+	_titleArray = SPLIT(_poem,' ')
+	_title = "%(_titleArray[0]) %(_titleArray[1]) %(_titleArray[3])"
+	
+	savedPoems ,= "%(_title)|||%(_poem)" //god help me if anyone puts ||| in their dialogue
+	
+	"\0\s[0]\*\_qSaved poem '%(_title)'.\n\n"
+	"%*\__q[OnSakuraMenu]Go to menu\__q %*\__q[OnSavedPoems]view poems\__q %*\__q[blank]Close dialogue box\__q"
+}*/
+
+
+//This is just here so you can use anchors to link to websites if you want. You can link to websites with normal menu choice tags! If you do, a handy URL preview will show up in the balloon!
+OnAnchorSelect
+{
+	if "http://" _in_ reference0 || "https://" _in_ reference0; "\j[""%(reference0)""]"
+}
+
+//Hotkeys
+OnKeyPress
+{
+	if reference0 == "f1"; "\![open,readme]"
+	elseif reference0 == "t"; OnAiTalk
+	elseif reference0 == "r"; OnLastTalk
+}
+
+//Happens about 30 seconds after a script ends, by default, to bring them back to normal poses
+OnSurfaceRestore
+{
+	"\1\s[10]\![bind,energy,,0]\0\s[0]"
+}
+
+//Happens when the ghost is unminimized. You *can* include dialogue, but you don't *have* to. I have included this event because if you don't, it defaults to \0\s[0]\1\s[10], which you don't want in some cases, such as if your ghost uses different surfaces or has a different number of characters.
+OnWindowStateRestore
+{
+	"\1\s[10]\![bind,energy,,0]\0\s[0]"
+}
+
+On_homeurl
+{
+	"https://raw.githubusercontent.com/SmokyCinnamon/acquiredsg_scr/main/"
+}
+
+
+//—————————————————————————————— Right click menu links ——————————————————————————————
+
+//Takes an array of alternating names and urls, and formats them for use with the right click menu
+FormatLinks : all
+{
+	for _i = 0; _i < ARRAYSIZE(_argv); _i++
+	{
+		_argv[_i] //Add the link/title
+		//Alternate between adding %ASC(1) or %ASC(2)
+		if _i % 2 == 1; "%ASC(2)"
+		else; "%ASC(1)"
+	}
+}
+
+On_sakura.recommendsites
+{
+	//FormatLinks(recommendsites_sakura)
+}
+
+//These are the websites linked in the top option of the sakura's right click menu. The format is simple; write the label of the link on the left followed by a semicolon, and then on the right, the url to link to. These should be separate strings.
+recommendsites_sakura : array
+{
+	"Link label";	"https://link.example.com/link/to/whatever/here/"
+}
+
+On_sakura.portalsites 
+{
+	//FormatLinks(portalsites_sakura)
+}
+
+//These are the websites linked in the second option of the sakura's right click menu. Same as above
+portalsites_sakura : array
+{
+	"Another link label";	"https://link.example.com/link/to/whatever/here/again/"
+	"A third link label";	"https://link.example.com/link/to/whatever/a/third/time/you/can/add/as/many/as/you/want/"
+}
+
+On_kero.recommendsites
+{
+	//FormatLinks(recommendsites_kero)
+}
+
+//These are the websites linked in the first option of the kero's right click menu. Same as above
+recommendsites_kero : array
+{
+	"These labels can be anything you want";	"https://link.example.com/link/to/whatever/here/once/more/"
+}
+
+username
+{
+	SHIORI3FW.UserName
+}
