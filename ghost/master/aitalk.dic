@@ -52,7 +52,7 @@ Static {
 
 UNTAG {
 	//boy i sure hope this works
-	_replace = ("\0","\1","\x[noclear]","\x","\n[half]","\n","\w1","\w2","\w3","\w4","\w5","\w6","\w7","\w8","\w9","\s[0]",".",",","-","!","?",":",";","\e","\![nostatic]","'\f[size,-2]","\f[size,+2]","\b[0]","\b[2]")
+	_replace = ("\0","\1","\x[noclear]","\x","\n[half]","\n","\w1","\w2","\w3","\w4","\w5","\w6","\w7","\w8","\w9","\s[0]",".",",","-","!","?",":",";","\e","\![nostatic]","'\f[size,-2]","\f[size,+2]","\b[0]","\b[2]","\f[italic,1]","\f[default]")
 	//note that i can't replace single quotes without causing other issues. for the moment, anyways
 	foreach _replace; _element {
 		_argv = REPLACE(_argv,"%(_element)","")
@@ -62,7 +62,7 @@ UNTAG {
 
 UNTAGP {
 	//for keeping quotes. untag problems?
-	_replace = ("\0","\1","\x[noclear]","\x","\n[half]","\n","\w1","\w2","\w3","\w4","\w5","\w6","\w7","\w8","\w9","\s[0]",".",",","-","!","?",":",";","\e","\![nostatic]","'\f[size,-2]","\f[size,+2]","\b[0]","\b[2]")
+	_replace = ("\0","\1","\x[noclear]","\x","\n[half]","\n","\w1","\w2","\w3","\w4","\w5","\w6","\w7","\w8","\w9","\s[0]",".",",","-","!","?",":",";","\e","\![nostatic]","'\f[size,-2]","\f[size,+2]","\b[0]","\b[2]","\f[italic,1]","\f[default]")
 	foreach _replace; _element {
 		_argv = REPLACE(_argv,"%(_element)","")
 	}
